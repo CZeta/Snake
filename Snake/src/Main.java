@@ -1,10 +1,13 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -18,7 +21,10 @@ import javax.swing.WindowConstants;
 public class Main {
 	
 	static boolean wait=true;
-	 static Vector<int[]> snake=new Vector<>();//=new ArrayList<>();
+	//brauche ich das noch?
+	
+	static Properties p;
+	static Vector<int[]> snake=new Vector<>();//=new ArrayList<>();
 	
 	static int[] richtung= {10,0};
 	
@@ -34,6 +40,34 @@ public class Main {
 			
 
 	public static void main(String[] args) {
+		//Speichern einer Bestenliste:
+		p = new Properties();
+		
+		try {
+			/*FileOutputStream out = new FileOutputStream("properties.txt");
+			p.put("1", "000");
+			p.put("2", "000");
+			p.put("3", "000");
+			
+			p.store(out, "Beispiel Version 2");
+			*/
+			
+			
+			FileInputStream in = new FileInputStream("properties.txt");
+			p.load(in);
+			System.out.println("Platz1:"+ p.getProperty("1"));
+			System.out.println("Platz2:"+ p.getProperty("2"));
+			System.out.println("Platz3:"+ p.getProperty("3"));
+			in.close();
+			
+		} catch (IOException e) {
+			System.out.println("couldn't read file");
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 		boolean bedingung=true;
 		System.out.println("Gib eine Startgeschwindigkeit zwischen 1 und 4 ein");
 		Scanner eingabe=new Scanner(System.in);
@@ -164,7 +198,30 @@ public class Main {
 		
 		
 	}
-	
+	public static void SaveForList(int n) {
+		boolean neuerBestwert=true;
+		int i=1;
+		while(neuerBestwert&i<4) {
+			if(n>Integer.parseInt( p.getProperty(String.valueOf(i),"fehler"))) {
+				p.setProperty(String.valueOf(i),String.valueOf(n));
+				neuerBestwert=false;
+				System.out.println("Neuer Bestwert! Du bist auf Platz "+i);
+			}
+			i++;
+		}
+		
+		try {
+			FileOutputStream out = new FileOutputStream("properties.txt");
+			p.store(out,"Beispiel");
+			out.close();
+		} catch (IOException e) {
+			System.out.println("Fehler beim Speichern");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	
 	public static  void move() {
@@ -175,6 +232,9 @@ public class Main {
 		if(max(firstPos)>400||min(firstPos)<0) {
 			System.out.println("Du bist gegen die Wand geknallt");
 			System.out.println(snake.size());
+			
+			SaveForList(snake.size());
+			
 			System.exit(0);
 		}
 		if(firstPos[0]==Marker[0]&&firstPos[1]==Marker[1]) {
@@ -189,6 +249,9 @@ public class Main {
 		if(enthält(snake,firstPos)) {
 			System.out.println("Schlange hat sich gebissen");
 			System.out.println(snake.size());
+			
+			SaveForList(snake.size());
+			
 			System.exit(0);
 		}
 		else {
