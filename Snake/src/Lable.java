@@ -25,7 +25,7 @@ public class Lable extends JLabel{
 		}
 	}
 
-	protected synchronized void paintComponent(Graphics g) {
+	protected  void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d=(Graphics2D) g;
 		

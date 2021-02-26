@@ -3,56 +3,61 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+
+
 public class Main {
-	static ArrayList<int[]> snake=new ArrayList<>();
+	
+	static boolean wait=true;
+	 static Vector<int[]> snake=new Vector<>();//=new ArrayList<>();
+	
 	static int[] richtung= {10,0};
 	
-	static int[] initial1= {10,10};
+	static int[] initial1= {200,200};
 	static int[] initial2= {10,15};
 	static int[] initial3= {10,20};
 	static int[] Marker=new int[2];
 	
+	int GESCHWINDIGKEIT1=100;
+	int GESCHWINDIGKEIT2=200;
+	int GESCHWINDIGKEIT3=300;
+	int GESCHWINDIGKEIT4=400;
+			
 
 	public static void main(String[] args) {
+		boolean bedingung=true;
+		System.out.println("Gib eine Startgeschwindigkeit zwischen 1 und 4 ein");
+		Scanner eingabe=new Scanner(System.in);
+		while(bedingung) {
+			
+			int temp=eingabe.nextInt();
+			if(temp<1||temp>4) {
+				System.out.println("Gib einen gültigen Wert ein!");
+			}
+			else bedingung=false;
+		}
+		 //snake= Collections.synchronizedList(new ArrayList<int[]>());
 		newMarker();
+		
 		try {
-			Thread.sleep(150);
+			Thread.sleep(550);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		snake.add(initial1);
-		snake.add(initial2);
-		snake.add(initial3);
-		//getPosition();
-		move();
-		//getPosition();
-		
-		//richtung[1]=1;
-		move();
-		getPosition();
-		
-		Runnable task2 = () -> { 
-			while(true) {
-				move();
-				//getPosition();
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		};
-		new Thread(task2).start();
-		//new Process2();
-		
+		snake.add(initial1);
+		snake.add(initial1);
 		
 		JFrame myFrame=new JFrame();
 		myFrame.setVisible(true);
@@ -65,6 +70,63 @@ public class Main {
 		lbl1.setBounds(0,0,500,500);
 		
 		myFrame.add(lbl1);
+		myFrame.addKeyListener(new KeyHandler());
+		/*
+		bedingung=true;
+		while(bedingung) {
+		String initDirection=eingabe.nextLine();
+		
+			if( initDirection.equals("w")) {
+				bedingung=false;
+				richtung[0]=0;
+				richtung[1]=-10;
+			}
+			else if( initDirection.equals("s")) {
+				bedingung=false;
+				richtung[0]=0;
+				richtung[1]=10;
+			}
+			else if( initDirection.equals("a")) {
+				bedingung=false;
+				richtung[0]=-10;
+				richtung[1]=0;
+			}
+			else if( initDirection.equals("d")) {
+				bedingung=false;
+				richtung[0]=10;
+				richtung[1]=0;
+			}
+			
+		}
+		*/
+		
+		
+		/*
+		//getPosition();
+		move();
+		//getPosition();
+		
+		//richtung[1]=1;
+		move();
+		getPosition();
+		*/
+		/*
+		Runnable task2 = () -> { 
+			while(true) {
+				move();
+				//getPosition();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+		new Thread(task2).start();
+		//new Process2();
+		
+		*/
 		
 		/*try {
 			final BufferedImage img = ImageIO.read(new File("rsc/background.png"));
@@ -99,17 +161,20 @@ public class Main {
 		}*/
 		
 		
-		myFrame.addKeyListener(new KeyHandler());
+		
 		
 	}
 	
-	public static synchronized void move() {
+	
+	
+	public static  void move() {
 		
 		int[] firstPos=new int[2];
 		firstPos[0]=snake.get(0)[0]+richtung[0];
 		firstPos[1]=snake.get(0)[1]+richtung[1];
 		if(max(firstPos)>400||min(firstPos)<0) {
 			System.out.println("Du bist gegen die Wand geknallt");
+			System.out.println(snake.size());
 			System.exit(0);
 		}
 		if(firstPos[0]==Marker[0]&&firstPos[1]==Marker[1]) {
@@ -123,6 +188,7 @@ public class Main {
 		//if(snake.contains(firstPos)) {
 		if(enthält(snake,firstPos)) {
 			System.out.println("Schlange hat sich gebissen");
+			System.out.println(snake.size());
 			System.exit(0);
 		}
 		else {
@@ -142,9 +208,9 @@ public class Main {
 		System.out.println("");
 	}
 	
-	public static boolean enthält(ArrayList<int[]> s,int[] such) {
+	public static boolean enthält(List<int[]> snake2,int[] such) {
 		boolean enthalten=false;
-		for(int[] next:s) {
+		for(int[] next:snake2) {
 			//if(next.equals(such)) {
 			if(next[0]==such[0]&&next[1]==such[1]) {
 				enthalten=true;
