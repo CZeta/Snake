@@ -20,6 +20,9 @@ import javax.swing.WindowConstants;
 
 public class Main {
 	
+	static boolean repeat=true;
+	
+	static Lable lbl1;
 	static boolean wait=true;
 	//brauche ich das noch?
 	
@@ -39,6 +42,8 @@ public class Main {
 	static int GESCHWINDIGKEIT4=400;
 	
 	static int temp;
+	
+	static KeyHandler fritz;
 			
 
 	public static void main(String[] args) {
@@ -118,12 +123,13 @@ public class Main {
 		myFrame.setSize(500, 500);
 		
 		
-		Lable lbl1=new Lable();
+		lbl1=new Lable();
 		lbl1.setVisible(true);
 		lbl1.setBounds(0,0,500,500);
 		
 		myFrame.add(lbl1);
-		myFrame.addKeyListener(new KeyHandler());
+		fritz=new KeyHandler();
+		myFrame.addKeyListener(fritz);
 		/*
 		bedingung=true;
 		while(bedingung) {
@@ -241,9 +247,12 @@ public class Main {
 		
 		
 	}
-	
+	public static void stopMove() {
+		repeat=false;
+	}
 	
 	public static  void move() {
+		
 		
 		int[] firstPos=new int[2];
 		firstPos[0]=snake.get(0)[0]+richtung[0];
@@ -254,7 +263,11 @@ public class Main {
 			
 			SaveForList(snake.size());
 			
-			System.exit(0);
+			//System.exit(0);
+			
+			lbl1.setVisible(false);
+			
+			stopMove();
 		}
 		if(firstPos[0]==Marker[0]&&firstPos[1]==Marker[1]) {
 			System.out.println("Juhu");
@@ -271,7 +284,9 @@ public class Main {
 			
 			SaveForList(snake.size());
 			
-			System.exit(0);
+			lbl1.setVisible(false);
+			
+			//System.exit(0);
 		}
 		else {
 		

@@ -7,7 +7,7 @@ public class KeyHandler implements KeyListener{
 	public void keyTyped(KeyEvent e) {
 		if(!Started) {
 		Runnable task2 = () -> { 
-			while(true) {
+			while(Main.repeat) {
 				Main.move();
 				//getPosition();
 				try {
@@ -17,8 +17,10 @@ public class KeyHandler implements KeyListener{
 					f.printStackTrace();
 				}
 			}
+			System.out.println("Dieser Thread wurde erfolgreich getötet");
 		};
-		new Thread(task2).start();
+		Thread execMove =new Thread(task2);
+		execMove.start();
 		Started=true;
 		}
 		
