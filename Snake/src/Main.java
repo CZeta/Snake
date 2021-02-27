@@ -13,7 +13,10 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
 
@@ -23,6 +26,10 @@ public class Main {
 	static boolean repeat=true;
 	
 	static Lable lbl1;
+	static JTable BestenListe;
+	
+	static JFrame myFrame; 
+	
 	static boolean wait=true;
 	//brauche ich das noch?
 	
@@ -117,7 +124,7 @@ public class Main {
 		snake.add(initial1);
 		snake.add(initial1);
 		
-		JFrame myFrame=new JFrame();
+		myFrame=new JFrame();
 		myFrame.setVisible(true);
 		myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		myFrame.setSize(500, 500);
@@ -223,6 +230,24 @@ public class Main {
 		
 		
 	}
+	
+	public static void showBList() {
+		String[]columnNames= {"Platzierung", "Punkte"};
+		String[][] data= {
+							{ "1", p.getProperty("1")},
+							{"2", p.getProperty("2")},
+							{"3", p.getProperty("3")}
+						};
+		BestenListe=new JTable(data,columnNames);
+		BestenListe.setVisible(true);
+		BestenListe.setBounds(30, 40, 200, 300); 
+		
+		JScrollPane sp=new JScrollPane(BestenListe);
+		//BestenListe.add(sp);
+		
+		myFrame.add(sp);
+	}
+	
 	public static void SaveForList(int n) {
 		boolean neuerBestwert=true;
 		int i=1;
@@ -268,6 +293,7 @@ public class Main {
 			lbl1.setVisible(false);
 			
 			stopMove();
+			showBList();
 		}
 		if(firstPos[0]==Marker[0]&&firstPos[1]==Marker[1]) {
 			System.out.println("Juhu");
@@ -285,7 +311,7 @@ public class Main {
 			SaveForList(snake.size());
 			
 			lbl1.setVisible(false);
-			
+			stopMove();
 			//System.exit(0);
 		}
 		else {
