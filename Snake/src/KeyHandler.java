@@ -11,7 +11,7 @@ public class KeyHandler implements KeyListener{
 				Main.move();
 				//getPosition();
 				try {
-					Thread.sleep(100);
+					Thread.sleep(Main.temp);
 				} catch (InterruptedException f) {
 					// TODO Auto-generated catch block
 					f.printStackTrace();

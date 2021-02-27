@@ -33,10 +33,12 @@ public class Main {
 	static int[] initial3= {10,20};
 	static int[] Marker=new int[2];
 	
-	int GESCHWINDIGKEIT1=100;
-	int GESCHWINDIGKEIT2=200;
-	int GESCHWINDIGKEIT3=300;
-	int GESCHWINDIGKEIT4=400;
+	static int GESCHWINDIGKEIT1=100;
+	static int GESCHWINDIGKEIT2=200;
+	static int GESCHWINDIGKEIT3=300;
+	static int GESCHWINDIGKEIT4=400;
+	
+	static int temp;
 			
 
 	public static void main(String[] args) {
@@ -73,12 +75,29 @@ public class Main {
 		Scanner eingabe=new Scanner(System.in);
 		while(bedingung) {
 			
-			int temp=eingabe.nextInt();
+			temp=eingabe.nextInt();
 			if(temp<1||temp>4) {
 				System.out.println("Gib einen gültigen Wert ein!");
 			}
 			else bedingung=false;
 		}
+		
+		//vielleicht mal in enums ändern...
+		switch(temp) {
+		case 1:
+			temp=GESCHWINDIGKEIT1;
+			break;
+		case 2:
+			temp=GESCHWINDIGKEIT2;
+			break;
+		case 3:
+			temp=GESCHWINDIGKEIT3;
+			break;
+		case 4:
+			temp=GESCHWINDIGKEIT4;
+			break;
+		}
+		
 		 //snake= Collections.synchronizedList(new ArrayList<int[]>());
 		newMarker();
 		
